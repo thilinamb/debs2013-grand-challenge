@@ -7,6 +7,7 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
+import cs555.project.util.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +22,9 @@ public class EnrichBolt extends BaseRichBolt {
     private class SensorMetadata {
         private String playerName;
         private String team = ""; // default values
-        private char leg = 'X'; // default values
+        private String leg = "X"; // default values
 
-        public SensorMetadata(String playerName, String team, char leg) {
+        public SensorMetadata(String playerName, String team, String leg) {
             this.playerName = playerName;
             this.team = team;
             this.leg = leg;
@@ -33,7 +34,7 @@ public class EnrichBolt extends BaseRichBolt {
             this.playerName = playerName;
         }
 
-        public SensorMetadata(String playerName, char leg) {
+        public SensorMetadata(String playerName, String leg) {
             this.playerName = playerName;
             this.leg = leg;
         }
@@ -51,42 +52,42 @@ public class EnrichBolt extends BaseRichBolt {
         metadata.put(10, new SensorMetadata("Ball"));
         metadata.put(12, new SensorMetadata("Ball"));
         // referee
-        metadata.put(105, new SensorMetadata("Referee",'L'));
-        metadata.put(106, new SensorMetadata("Referee",'R'));
+        metadata.put(105, new SensorMetadata("Referee","L"));
+        metadata.put(106, new SensorMetadata("Referee","R"));
         // team A
-        metadata.put(13, new SensorMetadata("Nick Gertje","A",'L'));
-        metadata.put(14, new SensorMetadata("Nick Gertje","A",'R'));
-        metadata.put(47, new SensorMetadata("Dennis Dotterweich","A",'L'));
-        metadata.put(16, new SensorMetadata("Dennis Dotterweich","A",'R'));
-        metadata.put(49, new SensorMetadata("Niklas Waelzlein","A",'L'));
-        metadata.put(88, new SensorMetadata("Niklas Waelzlein","A",'R'));
-        metadata.put(19, new SensorMetadata("Wili Sommer","A",'L'));
-        metadata.put(52, new SensorMetadata("Wili Sommer","A",'R'));
-        metadata.put(53, new SensorMetadata("Philipp Harlass","A",'L'));
-        metadata.put(54, new SensorMetadata("Philipp Harlass","A",'R'));
-        metadata.put(23, new SensorMetadata("Roman Hartleb","A",'L'));
-        metadata.put(24, new SensorMetadata("Roman Hartleb","A",'R'));
-        metadata.put(57, new SensorMetadata("Erik Engelhardt","A",'L'));
-        metadata.put(58, new SensorMetadata("Erik Engelhardt","A",'R'));
-        metadata.put(59, new SensorMetadata("Sandro Schneider","A",'L'));
-        metadata.put(60, new SensorMetadata("Sandro Schneider","A",'R'));
+        metadata.put(13, new SensorMetadata("Nick Gertje","A","L"));
+        metadata.put(14, new SensorMetadata("Nick Gertje","A","R"));
+        metadata.put(47, new SensorMetadata("Dennis Dotterweich","A","L"));
+        metadata.put(16, new SensorMetadata("Dennis Dotterweich","A","R"));
+        metadata.put(49, new SensorMetadata("Niklas Waelzlein","A","L"));
+        metadata.put(88, new SensorMetadata("Niklas Waelzlein","A","R"));
+        metadata.put(19, new SensorMetadata("Wili Sommer","A","L"));
+        metadata.put(52, new SensorMetadata("Wili Sommer","A","R"));
+        metadata.put(53, new SensorMetadata("Philipp Harlass","A","L"));
+        metadata.put(54, new SensorMetadata("Philipp Harlass","A","R"));
+        metadata.put(23, new SensorMetadata("Roman Hartleb","A","L"));
+        metadata.put(24, new SensorMetadata("Roman Hartleb","A","R"));
+        metadata.put(57, new SensorMetadata("Erik Engelhardt","A","L"));
+        metadata.put(58, new SensorMetadata("Erik Engelhardt","A","R"));
+        metadata.put(59, new SensorMetadata("Sandro Schneider","A","L"));
+        metadata.put(60, new SensorMetadata("Sandro Schneider","A","R"));
         // team B
-        metadata.put(61, new SensorMetadata("Leon Krapf","B",'L'));
-        metadata.put(62, new SensorMetadata("Leon Krapf","B",'R'));
-        metadata.put(63, new SensorMetadata("Kevin Baer","B",'L'));
-        metadata.put(64, new SensorMetadata("Kevin Baer","B",'R'));
-        metadata.put(65, new SensorMetadata("Luca Ziegler","B",'L'));
-        metadata.put(66, new SensorMetadata("Luca Ziegler","B",'R'));
-        metadata.put(67, new SensorMetadata("Ben Mueller","B",'L'));
-        metadata.put(68, new SensorMetadata("Ben Mueller","B",'R'));
-        metadata.put(69, new SensorMetadata("Vale Reitstetter","B",'L'));
-        metadata.put(38, new SensorMetadata("Vale Reitstetter","B",'R'));
-        metadata.put(71, new SensorMetadata("Christopher Lee","B",'L'));
-        metadata.put(40, new SensorMetadata("Christopher Lee","B",'R'));
-        metadata.put(73, new SensorMetadata("Leon Heinze","B",'L'));
-        metadata.put(74, new SensorMetadata("Leon Heinze","B",'R'));
-        metadata.put(75, new SensorMetadata("Leo Langhans","B",'L'));
-        metadata.put(44, new SensorMetadata("Leo Langhans","B",'R'));
+        metadata.put(61, new SensorMetadata("Leon Krapf","B","L"));
+        metadata.put(62, new SensorMetadata("Leon Krapf","B","R"));
+        metadata.put(63, new SensorMetadata("Kevin Baer","B","L"));
+        metadata.put(64, new SensorMetadata("Kevin Baer","B","R"));
+        metadata.put(65, new SensorMetadata("Luca Ziegler","B","L"));
+        metadata.put(66, new SensorMetadata("Luca Ziegler","B","R"));
+        metadata.put(67, new SensorMetadata("Ben Mueller","B","L"));
+        metadata.put(68, new SensorMetadata("Ben Mueller","B","R"));
+        metadata.put(69, new SensorMetadata("Vale Reitstetter","B","L"));
+        metadata.put(38, new SensorMetadata("Vale Reitstetter","B","R"));
+        metadata.put(71, new SensorMetadata("Christopher Lee","B","L"));
+        metadata.put(40, new SensorMetadata("Christopher Lee","B","R"));
+        metadata.put(73, new SensorMetadata("Leon Heinze","B","L"));
+        metadata.put(74, new SensorMetadata("Leon Heinze","B","R"));
+        metadata.put(75, new SensorMetadata("Leo Langhans","B","L"));
+        metadata.put(44, new SensorMetadata("Leo Langhans","B","R"));
     }
 
     @Override

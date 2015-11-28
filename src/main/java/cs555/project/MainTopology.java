@@ -6,6 +6,9 @@ import backtype.storm.StormSubmitter;
 import backtype.storm.generated.AlreadyAliveException;
 import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.topology.TopologyBuilder;
+import backtype.storm.tuple.Fields;
+import cs555.project.running.RunningPerfCalcBolt;
+import cs555.project.util.Constants;
 
 /**
  * @author Thilina Buddhika
@@ -15,6 +18,7 @@ public class MainTopology {
     public static final String FILE_READER_SPOUT = "file-reader-spout";
     public static final String ENRICHMENT_BOLT = "enrichment-bolt";
     public static final String HUB_BOLT = "hub-bolt";
+    public static final String RUNNING_PERF_CALC_BOLT = "running-perf-calc-bolt";
 
     public static void main(String[] args) {
         TopologyBuilder builder = new TopologyBuilder();
@@ -22,6 +26,12 @@ public class MainTopology {
         builder.setSpout(FILE_READER_SPOUT, new FileReaderSpout(), 1);
         builder.setBolt(ENRICHMENT_BOLT, new EnrichBolt(), 1).globalGrouping(FILE_READER_SPOUT);
         builder.setBolt(HUB_BOLT, new HubBolt(), 1).globalGrouping(ENRICHMENT_BOLT);
+
+        // add topology 1 - player running perf.
+        // partition the stream by player's name
+        builder.setBolt(RUNNING_PERF_CALC_BOLT, new RunningPerfCalcBolt(), 4).fieldsGrouping(HUB_BOLT,
+                Constants.Streams.PLAYER_POSITIONS, new Fields(Constants.Fields.META_NAME));
+
 
         Config conf = new Config();
         conf.put(Config.TOPOLOGY_DEBUG, false);

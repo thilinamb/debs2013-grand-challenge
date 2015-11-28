@@ -1,4 +1,4 @@
-package cs555.project;
+package cs555.project.util;
 
 /**
  * @author Thilina Buddhika
@@ -7,9 +7,11 @@ public class Constants {
 
     public static final int PICO_TO_MILLI = 1000000000;
     public static final String INPUT_FILE = "input-file";
+    public static final int PLAYER_PERF_SLIDING_WINDOW_LEN = 5 * 1000;
 
     public class Streams {
         public static final String RAW_READINGS_STREAM = "raw-stream";
+        public static final String PLAYER_POSITIONS = "player-positions";
     }
 
     public class Fields {

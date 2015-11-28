@@ -6,6 +6,7 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
+import cs555.project.util.Constants;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
