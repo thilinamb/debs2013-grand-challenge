@@ -4,10 +4,7 @@ import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Tuple;
-import cs555.project.util.Constants;
-import cs555.project.util.SlidingWindow;
-import cs555.project.util.SlidingWindowCallback;
-import cs555.project.util.SlidingWindowEntry;
+import cs555.project.util.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +33,7 @@ public class RunningPerfCalcBolt extends BaseBasicBolt {
         if (playerRunningPerfWindows.containsKey(playerName)) {
             playerWindow = playerRunningPerfWindows.get(playerName);
             lastEntry = (DeltaDistanceSWEntry) playerWindow.getLastEntry();
-            distance = calculateDistance(lastEntry.getX(), x, lastEntry.getY(), y);
+            distance = Util.calculateDistance(lastEntry.getX(), x, lastEntry.getY(), y);
             playerRunningDistance = playerRunningDistanceOverWindow.get(playerName);
             playerRunningDistance += distance;
         } else {
@@ -69,7 +66,7 @@ public class RunningPerfCalcBolt extends BaseBasicBolt {
     }
 
     private void emitSpeed(String playerName, double speed, long now) {
-        System.out.println("Speed: " + playerName + " --> " + speed);
+        //System.out.println("Speed: " + playerName + " --> " + speed);
         lastEmittedAt = now;
     }
 
@@ -78,8 +75,6 @@ public class RunningPerfCalcBolt extends BaseBasicBolt {
         // none for the moment
     }
 
-    private double calculateDistance(double x1, double x2, double y1, double y2) {
-        return Math.abs(Math.sqrt(Math.pow(y1 - y2, 2) + Math.pow(x1 - x2, 2)));
-    }
+
 
 }

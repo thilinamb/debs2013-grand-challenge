@@ -3,7 +3,9 @@ package cs555.project.possession;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
+import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
+import backtype.storm.tuple.Values;
 import cs555.project.util.Constants;
 import cs555.project.util.Util;
 
@@ -63,18 +65,28 @@ public class BallHitDetectionBolt extends BaseBasicBolt {
             if (currentBallHolder == null) {
                 currentBallHolder = closestPlayer;
             } else {
-                if (currentBallHolder.distanceToBall <= 1000 && acceleration >= 55) {
-                    // previous ball holder has hit the ball
-                    System.out.println("Ball belongs to team " + currentBallHolder.team);
-                }
                 currentBallHolder = closestPlayer;
+                if (currentBallHolder.distanceToBall <= 1000 && acceleration >= 55) {
+                    // TODO: update it to emit to a stream that calculates the ball posession
+                    // previous ball holder has hit the ball
+                    System.out.println("[EVENT] Ball belongs to team " + currentBallHolder.team);
+                    // emit to a stream to calculate shots on goal
+                    basicOutputCollector.emit(Constants.Streams.SHOTS_ON_GALL, new Values(tuple.getLongByField(
+                            Constants.Fields.RAW_TIMESTAMP), currentBallHolder.team, x, y, Constants.Fields.RAW_VELOCITY,
+                            Constants.Fields.RAW_VEL_X, Constants.Fields.RAW_VEL_Y));
+                }
+                System.out.println("Ball closest to " + closestPlayer.team
+                        + ", distance " + closestPlayer.distanceToBall + ", acceleration: " + acceleration);
             }
         }
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-
+        outputFieldsDeclarer.declareStream(Constants.Streams.SHOTS_ON_GALL, new Fields(Constants.Fields.RAW_TIMESTAMP,
+                Constants.Fields.META_TEAM,
+                Constants.Fields.RAW_LOC_X, Constants.Fields.RAW_LOC_Y, Constants.Fields.RAW_VELOCITY,
+                Constants.Fields.RAW_VEL_X, Constants.Fields.RAW_VEL_Y));
     }
 
     private PlayerPosition findClosestPlayer(double ballX, double ballY) {
@@ -92,6 +104,5 @@ public class BallHitDetectionBolt extends BaseBasicBolt {
         }
         return closestPlayer;
     }
-
 
 }

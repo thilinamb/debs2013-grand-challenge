@@ -7,7 +7,9 @@ import backtype.storm.generated.AlreadyAliveException;
 import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
+import cs555.project.possession.BallHitDetectionBolt;
 import cs555.project.running.RunningPerfCalcBolt;
+import cs555.project.shotsongoal.ShotsOnGoalDetectionBolt;
 import cs555.project.util.Constants;
 
 /**
@@ -19,6 +21,8 @@ public class MainTopology {
     public static final String ENRICHMENT_BOLT = "enrichment-bolt";
     public static final String HUB_BOLT = "hub-bolt";
     public static final String RUNNING_PERF_CALC_BOLT = "running-perf-calc-bolt";
+    public static final String BALL_HIT_DETECTION_BOLT = "bolt-hit-detection-bolt";
+    public static final String SHOTS_ON_GOAL_DETECTION_BOLT = "shots-on-goal-detection-bolt";
 
     public static void main(String[] args) {
         TopologyBuilder builder = new TopologyBuilder();
@@ -32,6 +36,13 @@ public class MainTopology {
         builder.setBolt(RUNNING_PERF_CALC_BOLT, new RunningPerfCalcBolt(), 4).fieldsGrouping(HUB_BOLT,
                 Constants.Streams.PLAYER_POSITIONS, new Fields(Constants.Fields.META_NAME));
 
+        // add topology 2 - ball possession
+        builder.setBolt(BALL_HIT_DETECTION_BOLT, new BallHitDetectionBolt()).globalGrouping(HUB_BOLT,
+                Constants.Streams.PLAYER_BALL_POSITIONS);
+
+        // add topology 3 - shots on goal
+        builder.setBolt(SHOTS_ON_GOAL_DETECTION_BOLT, new ShotsOnGoalDetectionBolt()).globalGrouping(
+                BALL_HIT_DETECTION_BOLT, Constants.Streams.SHOTS_ON_GALL);
 
         Config conf = new Config();
         conf.put(Config.TOPOLOGY_DEBUG, false);

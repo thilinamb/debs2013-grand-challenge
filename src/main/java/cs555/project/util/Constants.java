@@ -10,8 +10,9 @@ public class Constants {
     public static final int PLAYER_PERF_SLIDING_WINDOW_LEN = 5 * 1000;
 
     public class Streams {
-        public static final String RAW_READINGS_STREAM = "raw-stream";
         public static final String PLAYER_POSITIONS = "player-positions";
+        public static final String PLAYER_BALL_POSITIONS = "player-ball-positions";
+        public static final String SHOTS_ON_GALL = "shots-on-gall";
     }
 
     public class Fields {

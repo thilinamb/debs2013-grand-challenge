@@ -35,11 +35,31 @@ public class HubBolt extends BaseBasicBolt {
                         tuple.getDoubleByField(Constants.Fields.RAW_LOC_Y)));
             }
         }
+        // emit ball possession data
+        if (!playerName.equals("Referee")) {
+            basicOutputCollector.emit(Constants.Streams.PLAYER_BALL_POSITIONS, new Values(
+                    tuple.getLongByField(Constants.Fields.RAW_TIMESTAMP),
+                    tuple.getStringByField(Constants.Fields.META_NAME),
+                    tuple.getStringByField(Constants.Fields.META_TEAM),
+                    tuple.getStringByField(Constants.Fields.META_LEG),
+                    tuple.getDoubleByField(Constants.Fields.RAW_LOC_X),
+                    tuple.getDoubleByField(Constants.Fields.RAW_LOC_Y),
+                    tuple.getDoubleByField(Constants.Fields.RAW_ACCELERATION),
+                    tuple.getDoubleByField(Constants.Fields.RAW_VELOCITY),
+                    tuple.getDoubleByField(Constants.Fields.RAW_VEL_X),
+                    tuple.getDoubleByField(Constants.Fields.RAW_VEL_Y)));
+        }
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
+        // player positions for calculate their running performance
         outputFieldsDeclarer.declareStream(Constants.Streams.PLAYER_POSITIONS, new Fields(Constants.Fields.RAW_TIMESTAMP,
                 Constants.Fields.META_NAME, Constants.Fields.META_TEAM, Constants.Fields.RAW_LOC_X, Constants.Fields.RAW_LOC_Y));
+        // position of players and ball to calculate the ball possession
+        outputFieldsDeclarer.declareStream(Constants.Streams.PLAYER_BALL_POSITIONS, new Fields(
+                Constants.Fields.RAW_TIMESTAMP, Constants.Fields.META_NAME, Constants.Fields.META_TEAM, Constants.Fields.META_LEG,
+                Constants.Fields.RAW_LOC_X, Constants.Fields.RAW_LOC_Y, Constants.Fields.RAW_ACCELERATION,
+                Constants.Fields.RAW_VELOCITY, Constants.Fields.RAW_VEL_X, Constants.Fields.RAW_VEL_Y));
     }
 }
