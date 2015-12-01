@@ -35,6 +35,10 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-sse</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
