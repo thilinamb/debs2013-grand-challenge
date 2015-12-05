@@ -3,9 +3,14 @@ package cs555.project.running;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
+import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
+import backtype.storm.tuple.Values;
 import cs555.project.util.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,26 +60,51 @@ public class RunningPerfCalcBolt extends BaseBasicBolt {
             }
         });
         // calculate the avg speed over the sliding window in km/h
-        double speed = (playerRunningDistanceOverWindow.get(playerName) * 60 * 60) / (Constants.PLAYER_PERF_SLIDING_WINDOW_LEN * 1000);
+        double speed = (playerRunningDistanceOverWindow.get(playerName) * 60 * 60) /
+                (Constants.PLAYER_PERF_SLIDING_WINDOW_LEN * 1000);
+        String team = tuple.getStringByField(Constants.Fields.META_NAME);
         // stream rate should be 50 Hz
         long now = System.currentTimeMillis();
-        if ((now - lastEmittedAt) >= 2000) {
-            emitSpeed(playerName, speed, now);
-        } else {
-            emitSpeed(playerName, speed, now);
+        if ((now - lastEmittedAt) >= 20) {
+            try {
+                basicOutputCollector.emit(Constants.Streams.PLAYER_PERF_TO_PUBLISHER,
+                        new Values(Constants.Topics.RUNNING_PERF, createBinaryPayload(playerName, team, speed)));
+                lastEmittedAt = now;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void emitSpeed(String playerName, double speed, long now) {
-        //System.out.println("Speed: " + playerName + " --> " + speed);
-        lastEmittedAt = now;
+    private byte[] createBinaryPayload(String playerName, String team, double speed) throws IOException {
+        ByteArrayOutputStream baos = null;
+        DataOutputStream dos = null;
+        try {
+            baos = new ByteArrayOutputStream();
+            dos = new java.io.DataOutputStream(baos);
+            dos.writeUTF(playerName);
+            dos.writeUTF(team);
+            dos.writeDouble(speed);
+            dos.flush();
+            return baos.toByteArray();
+        } finally {
+            try {
+                if (baos != null) {
+                    baos.close();
+                }
+                if (dos != null) {
+                    dos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        // none for the moment
+        outputFieldsDeclarer.declareStream(Constants.Streams.PLAYER_PERF_TO_PUBLISHER,
+                new Fields(Constants.Fields.TOPIC, Constants.Fields.PAYLOAD));
     }
-
-
 
 }

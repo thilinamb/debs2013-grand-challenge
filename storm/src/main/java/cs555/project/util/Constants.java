@@ -8,11 +8,17 @@ public class Constants {
     public static final int PICO_TO_MILLI = 1000000000;
     public static final String INPUT_FILE = "input-file";
     public static final int PLAYER_PERF_SLIDING_WINDOW_LEN = 5 * 1000;
+    public static final String AMQP_ADDR = "tcp://somerset:61616";
 
     public class Streams {
         public static final String PLAYER_POSITIONS = "player-positions";
         public static final String PLAYER_BALL_POSITIONS = "player-ball-positions";
         public static final String SHOTS_ON_GALL = "shots-on-gall";
+        public static final String PLAYER_PERF_TO_PUBLISHER = "player-perf-to-pub";
+    }
+
+    public class Topics {
+        public static final String RUNNING_PERF = "running-perf";
     }
 
     public class Fields {
@@ -33,5 +39,8 @@ public class Constants {
         public static final String META_NAME = "meta-name";
         public static final String META_TEAM = "meta-team";
         public static final String META_LEG = "meta-leg";
+        // to publisher stream
+        public static final String TOPIC = "topic";
+        public static final String PAYLOAD = "payload";
     }
 }
