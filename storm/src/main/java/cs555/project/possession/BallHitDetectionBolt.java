@@ -74,6 +74,8 @@ public class BallHitDetectionBolt extends BaseBasicBolt {
                     basicOutputCollector.emit(Constants.Streams.SHOTS_ON_GALL, new Values(tuple.getLongByField(
                             Constants.Fields.RAW_TIMESTAMP), currentBallHolder.team, x, y, Constants.Fields.RAW_VELOCITY,
                             Constants.Fields.RAW_VEL_X, Constants.Fields.RAW_VEL_Y));
+                    basicOutputCollector.emit(Constants.Streams.BALL_POSSESSION, new Values(tuple.getLongByField(
+                            Constants.Fields.RAW_TIMESTAMP), currentBallHolder.team));
                 }
                 System.out.println("Ball closest to " + closestPlayer.team
                         + ", distance " + closestPlayer.distanceToBall + ", acceleration: " + acceleration);
@@ -83,6 +85,8 @@ public class BallHitDetectionBolt extends BaseBasicBolt {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
+        outputFieldsDeclarer.declareStream(Constants.Streams.BALL_POSSESSION, new Fields(Constants.Fields.RAW_TIMESTAMP,
+                Constants.Fields.META_TEAM));
         outputFieldsDeclarer.declareStream(Constants.Streams.SHOTS_ON_GALL, new Fields(Constants.Fields.RAW_TIMESTAMP,
                 Constants.Fields.META_TEAM,
                 Constants.Fields.RAW_LOC_X, Constants.Fields.RAW_LOC_Y, Constants.Fields.RAW_VELOCITY,

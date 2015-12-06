@@ -14,11 +14,16 @@ public class Constants {
         public static final String PLAYER_POSITIONS = "player-positions";
         public static final String PLAYER_BALL_POSITIONS = "player-ball-positions";
         public static final String SHOTS_ON_GALL = "shots-on-gall";
+        public static final String BALL_POSSESSION = "ball-possession";
         public static final String PLAYER_PERF_TO_PUBLISHER = "player-perf-to-pub";
+        public static final String BALL_POSSESSION_TO_PUBLISHER = "ball-possession-to-publisher";
+        public static final String SHOTS_ON_GOAL_TO_PUBLISHER = "shots-on-goal-to-publisher";
     }
 
     public class Topics {
         public static final String RUNNING_PERF = "running-perf";
+        public static final String BALL_POSSESSION = "ball-possession";
+        public static final String SHOTS_ON_GOAL = "shots-on-goal";
     }
 
     public class Fields {

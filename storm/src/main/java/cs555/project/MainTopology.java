@@ -8,6 +8,7 @@ import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
 import cs555.project.possession.BallHitDetectionBolt;
+import cs555.project.possession.BallPossessionDetectionBolt;
 import cs555.project.publish.PublisherBolt;
 import cs555.project.running.RunningPerfCalcBolt;
 import cs555.project.shotsongoal.ShotsOnGoalDetectionBolt;
@@ -25,6 +26,7 @@ public class MainTopology {
     public static final String BALL_HIT_DETECTION_BOLT = "bolt-hit-detection-bolt";
     public static final String SHOTS_ON_GOAL_DETECTION_BOLT = "shots-on-goal-detection-bolt";
     public static final String PUBLISHER_BOLT = "publisher-bolt";
+    public static final String BALL_POSSESSION_BOLT = "ball-possession-bolt";
 
     public static void main(String[] args) {
         TopologyBuilder builder = new TopologyBuilder();
@@ -41,14 +43,22 @@ public class MainTopology {
         // add topology 2 - ball possession
         builder.setBolt(BALL_HIT_DETECTION_BOLT, new BallHitDetectionBolt(), 1).globalGrouping(HUB_BOLT,
                 Constants.Streams.PLAYER_BALL_POSITIONS);
+        builder.setBolt(BALL_POSSESSION_BOLT, new BallPossessionDetectionBolt(), 1).globalGrouping(
+                BALL_HIT_DETECTION_BOLT, Constants.Streams.BALL_POSSESSION);
 
         // add topology 3 - shots on goal
         builder.setBolt(SHOTS_ON_GOAL_DETECTION_BOLT, new ShotsOnGoalDetectionBolt(), 1).globalGrouping(
                 BALL_HIT_DETECTION_BOLT, Constants.Streams.SHOTS_ON_GALL);
 
         // send the player perf to the publisher
-        builder.setBolt(PUBLISHER_BOLT, new PublisherBolt(), 1).globalGrouping(
+        builder.setBolt(PUBLISHER_BOLT + "-1", new PublisherBolt(), 1).globalGrouping(
                 RUNNING_PERF_CALC_BOLT, Constants.Streams.PLAYER_PERF_TO_PUBLISHER);
+        // send ball possession data to the publisher
+        builder.setBolt(PUBLISHER_BOLT + "-2", new PublisherBolt(), 1).globalGrouping(
+                BALL_POSSESSION_BOLT, Constants.Streams.BALL_POSSESSION_TO_PUBLISHER);
+        // send shots on goal data to the publisher
+        builder.setBolt(PUBLISHER_BOLT + "-3", new PublisherBolt(), 1).globalGrouping(SHOTS_ON_GOAL_DETECTION_BOLT,
+                Constants.Streams.BALL_POSSESSION_TO_PUBLISHER);
 
         Config conf = new Config();
         conf.put(Config.TOPOLOGY_DEBUG, false);
