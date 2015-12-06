@@ -2,6 +2,9 @@ package cs555.project.restapi.store;
 
 import cs555.project.restapi.store.dataobjects.ShotsOnGoal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Thilina Buddhika
  */
@@ -9,10 +12,17 @@ public class ShotsOnGoalStore {
 
     private static final ShotsOnGoalStore instance = new ShotsOnGoalStore();
 
-    private ShotsOnGoal teamA = new ShotsOnGoal("A");
-    private ShotsOnGoal teamB = new ShotsOnGoal("B");
+    private ShotsOnGoal teamA;
+    private ShotsOnGoal teamB;
+    private List<ShotsOnGoal> values;
 
-    private ShotsOnGoalStore(){}
+    private ShotsOnGoalStore(){
+        teamA = new ShotsOnGoal("A");
+        teamB = new ShotsOnGoal("B");
+        values = new ArrayList<>();
+        values.add(teamA);
+        values.add(teamB);
+    }
 
     public static ShotsOnGoalStore getInstance(){
         return instance;
@@ -23,7 +33,7 @@ public class ShotsOnGoalStore {
         this.teamB.setValue(teamB);
     }
 
-    public synchronized void getValues(){
-
+    public synchronized List<ShotsOnGoal> getValues(){
+        return values;
     }
 }
