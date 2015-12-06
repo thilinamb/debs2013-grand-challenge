@@ -17,5 +17,6 @@ public class BallPossessionConsumer extends AbstractConsumer {
         double teamAPossession = dis.readDouble();
         double teamBPossession = dis.readDouble();
         dataStore.update(teamAPossession, teamBPossession);
+        System.out.println("Updated ball possession store.");
     }
 }

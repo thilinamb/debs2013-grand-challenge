@@ -17,6 +17,7 @@ public class ShotsOnGoalConsumer extends AbstractConsumer {
         int teamA = dataInputStream.readInt();
         int teamB = dataInputStream.readInt();
         dataStore.update(teamA, teamB);
+        System.out.println("updated shots-on-goal data store!");
     }
 
 }
