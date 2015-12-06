@@ -16,6 +16,8 @@ import javax.servlet.annotation.WebListener;
 public class SubscriptionInitializer implements ServletContextListener {
 
     public static final String RUNNING_PERF = "running-perf";
+    public static final String BALL_POSSESSION = "ball-possession";
+    public static final String SHOTS_ON_GOAL = "shots-on-goal";
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -25,10 +27,19 @@ public class SubscriptionInitializer implements ServletContextListener {
 
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-            // Setup main topic MessageListener
-            Topic destination = session.createTopic(RUNNING_PERF);
-            TopicSubscriber consumer = ((ActiveMQSession)session).createSubscriber(destination);
-            consumer.setMessageListener(new PlayerPerfConsumer());
+            // Setup MessageListeners for topics
+            Topic playerPerfTopicDestination = session.createTopic(RUNNING_PERF);
+            TopicSubscriber playerPerfSubscriber = ((ActiveMQSession)session).createSubscriber(playerPerfTopicDestination);
+            playerPerfSubscriber.setMessageListener(new PlayerPerfConsumer());
+
+            Topic ballPossessionTopicDest = session.createTopic(BALL_POSSESSION);
+            TopicSubscriber ballPossessionSubscriber = ((ActiveMQSession)session).createSubscriber(ballPossessionTopicDest);
+            ballPossessionSubscriber.setMessageListener(new BallPossessionConsumer());
+
+            Topic shotsOnGoalDest = session.createTopic(SHOTS_ON_GOAL);
+            TopicSubscriber shotsOnGoalSubscriber = ((ActiveMQSession)session).createSubscriber(shotsOnGoalDest);
+            shotsOnGoalSubscriber.setMessageListener(new ShotsOnGoalConsumer());
+
             // Note: important to ensure that connection.start() if
             // MessageListeners have been registered
             connection.start();

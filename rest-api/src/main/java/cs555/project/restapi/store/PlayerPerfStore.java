@@ -23,7 +23,7 @@ public class PlayerPerfStore {
         return instance;
     }
 
-    public void updatePerf(String playerName, String team, double perf){
+    public synchronized void updatePerf(String playerName, String team, double perf){
         PlayerPerformance playerPerformance = perfMap.get(playerName);
         if(playerPerformance == null){
             playerPerformance = new PlayerPerformance(playerName, team);
@@ -32,7 +32,7 @@ public class PlayerPerfStore {
         playerPerformance.setAvgRunningSpeed(perf);
     }
 
-    public List<PlayerPerformance> getAllPlayerPerf(){
+    public synchronized List<PlayerPerformance> getAllPlayerPerf(){
         List<PlayerPerformance> performances = new ArrayList<>();
         performances.addAll(perfMap.values());
         return performances;
