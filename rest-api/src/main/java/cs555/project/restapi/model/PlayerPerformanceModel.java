@@ -3,20 +3,20 @@ package cs555.project.restapi.model;
 import cs555.project.restapi.store.dataobjects.PlayerPerformance;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Thilina Buddhika
  */
 @XmlRootElement
 public class PlayerPerformanceModel {
-    private Map<String, PlayerPerformance> performances;
+    private List<PlayerPerformance> performances;
 
-    public Map<String, PlayerPerformance> getPerformances() {
+    public List<PlayerPerformance> getPerformances() {
         return performances;
     }
 
-    public void setPerformances(Map<String, PlayerPerformance> performances) {
+    public void setPerformances(List<PlayerPerformance> performances) {
         this.performances = performances;
     }
 }

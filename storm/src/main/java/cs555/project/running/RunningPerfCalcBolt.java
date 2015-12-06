@@ -62,7 +62,9 @@ public class RunningPerfCalcBolt extends BaseBasicBolt {
         // calculate the avg speed over the sliding window in km/h
         double speed = (playerRunningDistanceOverWindow.get(playerName) * 60 * 60) /
                 (Constants.PLAYER_PERF_SLIDING_WINDOW_LEN * 1000);
-        String team = tuple.getStringByField(Constants.Fields.META_NAME);
+        speed = Math.round(speed * 100);
+        speed = speed/100;
+        String team = tuple.getStringByField(Constants.Fields.META_TEAM);
         // stream rate should be 50 Hz
         long now = System.currentTimeMillis();
         if ((now - lastEmittedAt) >= 20) {

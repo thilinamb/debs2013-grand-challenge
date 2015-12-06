@@ -1,0 +1,84 @@
+{
+  "performances": {
+    "Vale Reitstetter": {
+      "name": "Vale Reitstetter",
+      "team": "Vale Reitstetter",
+      "avgRunningSpeed": 0.6898737248384541
+    },
+    "Philipp Harlass": {
+      "name": "Philipp Harlass",
+      "team": "Philipp Harlass",
+      "avgRunningSpeed": 0.6984025530895371
+    },
+    "Leon Heinze": {
+      "name": "Leon Heinze",
+      "team": "Leon Heinze",
+      "avgRunningSpeed": 0.747752419962141
+    },
+    "Christopher Lee": {
+      "name": "Christopher Lee",
+      "team": "Christopher Lee",
+      "avgRunningSpeed": 1.2438280234641172
+    },
+    "Sandro Schneider": {
+      "name": "Sandro Schneider",
+      "team": "Sandro Schneider",
+      "avgRunningSpeed": 2.2817834160318395
+    },
+    "Leon Krapf": {
+      "name": "Leon Krapf",
+      "team": "Leon Krapf",
+      "avgRunningSpeed": 1.4863467185105619
+    },
+    "Roman Hartleb": {
+      "name": "Roman Hartleb",
+      "team": "Roman Hartleb",
+      "avgRunningSpeed": 0.7978906133637858
+    },
+    "Dennis Dotterweich": {
+      "name": "Dennis Dotterweich",
+      "team": "Dennis Dotterweich",
+      "avgRunningSpeed": 0.7813558475126929
+    },
+    "Nick Gertje": {
+      "name": "Nick Gertje",
+      "team": "Nick Gertje",
+      "avgRunningSpeed": 0.6463405319377538
+    },
+    "Ben Mueller": {
+      "name": "Ben Mueller",
+      "team": "Ben Mueller",
+      "avgRunningSpeed": 0.5277510570856296
+    },
+    "Wili Sommer": {
+      "name": "Wili Sommer",
+      "team": "Wili Sommer",
+      "avgRunningSpeed": 1.0859560799481702
+    },
+    "Leo Langhans": {
+      "name": "Leo Langhans",
+      "team": "Leo Langhans",
+      "avgRunningSpeed": 0.7072307021426442
+    },
+    "Luca Ziegler": {
+      "name": "Luca Ziegler",
+      "team": "Luca Ziegler",
+      "avgRunningSpeed": 1.0881381809757902
+    },
+    "Niklas Waelzlein": {
+      "name": "Niklas Waelzlein",
+      "team": "Niklas Waelzlein",
+      "avgRunningSpeed": 1.03471778082275
+    },
+    "Erik Engelhardt": {
+      "name": "Erik Engelhardt",
+      "team": "Erik Engelhardt",
+      "avgRunningSpeed": 0.8985363815867663
+    },
+    "Kevin Baer": {
+      "name": "Kevin Baer",
+      "team": "Kevin Baer",
+      "avgRunningSpeed": 0.544397850144284
+    }
+  }
+}

@@ -2,7 +2,9 @@ package cs555.project.restapi.store;
 
 import cs555.project.restapi.store.dataobjects.PlayerPerformance;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,8 +32,10 @@ public class PlayerPerfStore {
         playerPerformance.setAvgRunningSpeed(perf);
     }
 
-    public Map<String, PlayerPerformance> getAllPlayerPerf(){
-        return perfMap;
+    public List<PlayerPerformance> getAllPlayerPerf(){
+        List<PlayerPerformance> performances = new ArrayList<>();
+        performances.addAll(perfMap.values());
+        return performances;
     }
 
 }
