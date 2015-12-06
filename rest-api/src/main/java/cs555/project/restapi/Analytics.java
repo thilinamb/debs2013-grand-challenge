@@ -1,14 +1,12 @@
 package cs555.project.restapi;
 
-import cs555.project.restapi.model.PlayerPerformance;
+import cs555.project.restapi.model.PlayerPerformanceModel;
+import cs555.project.restapi.store.PlayerPerfStore;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 /**
  * @author Thilina Buddhika
@@ -16,16 +14,13 @@ import java.util.Random;
 @Path("/analytics")
 public class Analytics {
 
-    private Random random = new Random(123);
+    PlayerPerfStore perfStore = PlayerPerfStore.getInstance();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public PlayerPerformance getStats(){
-        Map<String, Double> perf = new HashMap<>();
-        perf.put("Tom Sawyer", 123.345);
-        perf.put("Huckelbery Fin", 1267.345);
-        PlayerPerformance playerPerf = new PlayerPerformance();
-        playerPerf.setPerformances(perf);
+    public PlayerPerformanceModel getStats(){
+        PlayerPerformanceModel playerPerf = new PlayerPerformanceModel();
+        playerPerf.setPerformances(perfStore.getAllPlayerPerf());
         return playerPerf;
     }
 

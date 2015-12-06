@@ -1,2 +1,6 @@
-cs555/project/restapi/model/PlayerPerformance.class
+cs555/project/restapi/dataaccess/SubscriptionInitializer.class
+cs555/project/restapi/store/dataobjects/PlayerPerformance.class
+cs555/project/restapi/store/PlayerPerfStore.class
+cs555/project/restapi/dataaccess/PlayerPerfConsumer.class
+cs555/project/restapi/model/PlayerPerformanceModel.class
 cs555/project/restapi/Analytics.class
