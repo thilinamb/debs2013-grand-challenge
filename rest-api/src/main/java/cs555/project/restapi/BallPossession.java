@@ -1,6 +1,5 @@
 package cs555.project.restapi;
 
-import cs555.project.restapi.model.BallPossessionModel;
 import cs555.project.restapi.store.BallPossessionInfoStore;
 
 import javax.ws.rs.GET;
@@ -18,9 +17,10 @@ public class BallPossession {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public BallPossessionModel ballPossession(){
-        BallPossessionModel ballPossessionModel = new BallPossessionModel();
+    public cs555.project.restapi.store.dataobjects.BallPossession[] ballPossession(){
+        /*BallPossessionModel ballPossessionModel = new BallPossessionModel();
         ballPossessionModel.setBallPossessionInfo(ballPossessionInfoStore.getValues());
-        return ballPossessionModel;
+        return ballPossessionModel; */
+        return ballPossessionInfoStore.getValues();
     }
 }

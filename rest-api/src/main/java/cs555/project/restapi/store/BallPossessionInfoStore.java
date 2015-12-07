@@ -28,11 +28,15 @@ public class BallPossessionInfoStore {
     }
 
     public synchronized void update(double teamAPossession, double teamBPossession){
+        teamAPossession = Math.round(teamAPossession * 100);
+        teamAPossession = teamAPossession/100;
+        teamBPossession = Math.round(teamBPossession * 100);
+        teamBPossession = teamBPossession/100;
         this.teamA.setValue(teamAPossession);
         this.teamB.setValue(teamBPossession);
     }
 
-    public synchronized List<BallPossession> getValues(){
-        return values;
+    public synchronized BallPossession[] getValues(){
+        return values.toArray(new BallPossession[2]);
     }
 }
