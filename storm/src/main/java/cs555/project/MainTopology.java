@@ -68,7 +68,7 @@ public class MainTopology {
 
         // run on Storm cluster
         if (args != null && !args[0].equalsIgnoreCase("local")) {
-            conf.setNumWorkers(4);
+            conf.setNumWorkers(15);
             conf.put(Constants.INPUT_FILE, args[1]);
             try {
                 StormSubmitter.submitTopology("soccer-field-analysis", conf, builder.createTopology());
