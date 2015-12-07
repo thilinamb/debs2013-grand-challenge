@@ -1,11 +1,11 @@
-cs555/project/EnrichBolt$SensorMetadata.class
 cs555/project/util/SlidingWindow.class
+cs555/project/EnrichBolt$SensorMetadata.class
 cs555/project/FileReaderSpout.class
 cs555/project/publish/Publisher.class
 cs555/project/util/SlidingWindowEntry.class
 cs555/project/shotsongoal/ShotsOnGoalDetectionBolt.class
-cs555/project/HubBolt.class
 cs555/project/possession/BallHitDetectionBolt$PlayerPosition.class
+cs555/project/HubBolt.class
 cs555/project/running/RunningPerfCalcBolt.class
 cs555/project/util/Constants.class
 cs555/project/util/Constants$Streams.class
@@ -20,5 +20,5 @@ cs555/project/util/Constants$Topics.class
 cs555/project/util/SlidingWindowCallback.class
 cs555/project/MainTopology.class
 cs555/project/util/Constants$Fields.class
-cs555/project/EnrichBolt.class
 cs555/project/publish/PublisherBolt.class
+cs555/project/EnrichBolt.class
