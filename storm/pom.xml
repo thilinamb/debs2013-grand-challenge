@@ -31,12 +31,14 @@
                                     <artifact>org.apache.activemq:activemq-all</artifact>
                                     <includes>
                                         <include>org/apache/activemq/**</include>
+					<include>javax/**</include>
+					<include>com/sun/**</include>
                                     </includes>
                                     <excludes>
                                         <exclude>org/apache/log4j/**</exclude>
                                         <exclude>org/slf4j/**</exclude>
-                                        <exclude>javax/**</exclude>
-                                        <exclude>com/sun/**</exclude>
+                                        <!--<exclude>javax/**</exclude> -->
+                                        <!--<exclude>com/sun/**</exclude> -->
                                     </excludes>
                                 </filter>
                             </filters>
