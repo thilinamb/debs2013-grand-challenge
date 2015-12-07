@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/shotsOnGoal")
 public class ShotsOnGoal {
 
-    ShotsOnGoalStore shotsOnGoalStore = ShotsOnGoalStore.getInstance();
+    private ShotsOnGoalStore shotsOnGoalStore = ShotsOnGoalStore.getInstance();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

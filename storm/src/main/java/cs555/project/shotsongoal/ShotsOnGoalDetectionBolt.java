@@ -33,6 +33,7 @@ public class ShotsOnGoalDetectionBolt extends BaseBasicBolt {
         double projectedY = y + projectedVy * 1.5 * 1000;
         boolean shotsOnGoal = onGoal(tuple.getStringByField(Constants.Fields.META_TEAM), projectedX, projectedY);
         if(shotsOnGoal){
+            System.out.println("Shot on goal detected by team " + tuple.getStringByField(Constants.Fields.META_TEAM));
             try {
                 basicOutputCollector.emit(Constants.Streams.SHOTS_ON_GOAL_TO_PUBLISHER,
                         new Values(Constants.Topics.SHOTS_ON_GOAL, getBinaryPayload(teamAShotsOnGoal, teamBShotsOnGoal)));

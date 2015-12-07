@@ -72,13 +72,13 @@ public class BallHitDetectionBolt extends BaseBasicBolt {
                     System.out.println("[EVENT] Ball belongs to team " + currentBallHolder.team);
                     // emit to a stream to calculate shots on goal
                     basicOutputCollector.emit(Constants.Streams.SHOTS_ON_GALL, new Values(tuple.getLongByField(
-                            Constants.Fields.RAW_TIMESTAMP), currentBallHolder.team, x, y, Constants.Fields.RAW_VELOCITY,
-                            Constants.Fields.RAW_VEL_X, Constants.Fields.RAW_VEL_Y));
+                            Constants.Fields.RAW_TIMESTAMP), currentBallHolder.team, x, y, tuple.getDoubleByField(Constants.Fields.RAW_VELOCITY),
+                            tuple.getDoubleByField(Constants.Fields.RAW_VEL_X), tuple.getDoubleByField(Constants.Fields.RAW_VEL_Y)));
                     basicOutputCollector.emit(Constants.Streams.BALL_POSSESSION, new Values(tuple.getLongByField(
                             Constants.Fields.RAW_TIMESTAMP), currentBallHolder.team));
                 }
-                System.out.println("Ball closest to " + closestPlayer.team
-                        + ", distance " + closestPlayer.distanceToBall + ", acceleration: " + acceleration);
+                /*System.out.println("Ball closest to " + closestPlayer.team
+                        + ", distance " + closestPlayer.distanceToBall + ", acceleration: " + acceleration);*/
             }
         }
     }

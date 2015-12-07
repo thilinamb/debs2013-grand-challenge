@@ -27,36 +27,41 @@ public class BallPossessionDetectionBolt extends BaseBasicBolt {
 
     @Override
     public void execute(Tuple tuple, BasicOutputCollector basicOutputCollector) {
-        if(startTime == 0){
+        if (startTime == 0) {
             startTime = tuple.getLongByField(Constants.Fields.RAW_TIMESTAMP);
             lastSwitchTime = startTime;
             lastOwner = tuple.getStringByField(Constants.Fields.META_TEAM);
         } else {
             String currentOwner = tuple.getStringByField(Constants.Fields.META_TEAM);
-            long currentSwitchTime =  tuple.getLongByField(Constants.Fields.RAW_TIMESTAMP);
+            long currentSwitchTime = tuple.getLongByField(Constants.Fields.RAW_TIMESTAMP);
             // we need to consider if the other team gets hold of the ball
-            if(!lastOwner.equals(currentOwner)){
-                long duration = currentSwitchTime - lastSwitchTime;
-                if(lastOwner.equals("A")){
-                    teamAPossessionTime += duration;
-                } else {
-                    teamBPossessionTime = duration;
-                }
-                lastSwitchTime = currentSwitchTime;
-                lastOwner = currentOwner;
+            long duration = currentSwitchTime - lastSwitchTime;
+            if (lastOwner.equals("A")) {
+                teamAPossessionTime += duration;
+            } else {
+                teamBPossessionTime += duration;
             }
+            lastSwitchTime = currentSwitchTime;
+            lastOwner = currentOwner;
             totalTimeElapsed = currentSwitchTime - startTime;
         }
-        if(System.currentTimeMillis() - lastEmittedTime > 1000){
+        int c = 0;
+        if (System.currentTimeMillis() - lastEmittedTime > 1000) {
             try {
-                byte[] binaryPayload = prepareBinaryMessage((teamAPossessionTime * 1.0)/totalTimeElapsed,
-                        (teamBPossessionTime * 1.0)/totalTimeElapsed);
+                byte[] binaryPayload = prepareBinaryMessage((teamAPossessionTime * 1.0) / totalTimeElapsed,
+                        (teamBPossessionTime * 1.0) / totalTimeElapsed);
                 lastEmittedTime = System.currentTimeMillis();
                 basicOutputCollector.emit(Constants.Streams.BALL_POSSESSION_TO_PUBLISHER,
                         new Values(Constants.Topics.BALL_POSSESSION, binaryPayload));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            c++;
+        }
+        if (c == 5) {
+            System.out.println("A: " + (teamAPossessionTime * 1.0) / totalTimeElapsed + ", B: " +
+                    (teamBPossessionTime * 1.0) / totalTimeElapsed);
+            c = 0;
         }
     }
 

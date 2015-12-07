@@ -14,6 +14,8 @@ import cs555.project.running.RunningPerfCalcBolt;
 import cs555.project.shotsongoal.ShotsOnGoalDetectionBolt;
 import cs555.project.util.Constants;
 
+import java.util.concurrent.CountDownLatch;
+
 /**
  * @author Thilina Buddhika
  */
@@ -58,7 +60,7 @@ public class MainTopology {
                 BALL_POSSESSION_BOLT, Constants.Streams.BALL_POSSESSION_TO_PUBLISHER);
         // send shots on goal data to the publisher
         builder.setBolt(PUBLISHER_BOLT + "-3", new PublisherBolt(), 1).globalGrouping(SHOTS_ON_GOAL_DETECTION_BOLT,
-                Constants.Streams.BALL_POSSESSION_TO_PUBLISHER);
+                Constants.Streams.SHOTS_ON_GOAL_TO_PUBLISHER);
 
         Config conf = new Config();
         conf.put(Config.TOPOLOGY_DEBUG, false);
@@ -80,7 +82,7 @@ public class MainTopology {
             conf.put(Constants.INPUT_FILE, args[1]);
             cluster.submitTopology(args[0], conf, builder.createTopology());
             try {
-                Thread.sleep(5 * 60 * 1000);
+                new CountDownLatch(1).await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

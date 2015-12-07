@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/playerPerf")
 public class PlayerPerformance {
 
-    PlayerPerfStore perfStore = PlayerPerfStore.getInstance();
+    private PlayerPerfStore perfStore = PlayerPerfStore.getInstance();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

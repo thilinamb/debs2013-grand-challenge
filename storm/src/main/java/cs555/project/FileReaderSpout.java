@@ -53,13 +53,19 @@ public class FileReaderSpout extends BaseRichSpout {
                 if (currentTs == 0) { // this is the first line
                     currentSegments = line.split(",");
                 }
-                currentTs = Long.parseLong(currentSegments[1]) / Constants.PICO_TO_MILLI;
+                long timeInPicoSecs = Long.parseLong(currentSegments[1]);
+                currentTs = timeInPicoSecs / Constants.PICO_TO_MILLI;
                 // emit the line
-                collector.emit(new Values(Integer.parseInt(currentSegments[0]), currentTs,
-                        Double.parseDouble(currentSegments[2]), Double.parseDouble(currentSegments[3]), Double.parseDouble(currentSegments[4]),
-                        Double.parseDouble(currentSegments[5]), Double.parseDouble(currentSegments[6]),
-                        Double.parseDouble(currentSegments[7]), Double.parseDouble(currentSegments[8]), Double.parseDouble(currentSegments[9]),
-                        Double.parseDouble(currentSegments[10]), Double.parseDouble(currentSegments[11]), Double.parseDouble(currentSegments[12])));
+                if (isWithinTheDuration(timeInPicoSecs)) {
+                    collector.emit(new Values(Integer.parseInt(currentSegments[0]), currentTs,
+                            Double.parseDouble(currentSegments[2]), Double.parseDouble(currentSegments[3]),
+                            Double.parseDouble(currentSegments[4]),
+                            Double.parseDouble(currentSegments[5]), Double.parseDouble(currentSegments[6]),
+                            Double.parseDouble(currentSegments[7]), Double.parseDouble(currentSegments[8]),
+                            Double.parseDouble(currentSegments[9]),
+                            Double.parseDouble(currentSegments[10]), Double.parseDouble(currentSegments[11]),
+                            Double.parseDouble(currentSegments[12])));
+                }
                 // read next line
                 line = bufferedReader.readLine();
                 if (line == null) { // EOF
@@ -73,6 +79,17 @@ public class FileReaderSpout extends BaseRichSpout {
         } catch (java.io.IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isWithinTheDuration(long ts) {
+        boolean valid = false;
+        //System.out.println(ts);
+        if (ts >= 10753295594424116l && ts <= 12557295594424116l) {
+            valid = true;
+        } else if (ts >= 13086639146403495l && ts <= 14879639146403495l) {
+            valid = true;
+        }
+        return valid;
     }
 
 

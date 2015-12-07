@@ -14,13 +14,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/ballPossession")
 public class BallPossession {
 
-    BallPossessionInfoStore ballPossesionInfoStore = BallPossessionInfoStore.getInstance();
+    private BallPossessionInfoStore ballPossessionInfoStore = BallPossessionInfoStore.getInstance();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public BallPossessionModel ballPossession(){
         BallPossessionModel ballPossessionModel = new BallPossessionModel();
-        ballPossessionModel.setBallPossessionInfo(ballPossesionInfoStore.getValues());
+        ballPossessionModel.setBallPossessionInfo(ballPossessionInfoStore.getValues());
         return ballPossessionModel;
     }
 }
