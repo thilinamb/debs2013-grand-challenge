@@ -53,14 +53,14 @@ public class ShotsOnGoalDetectionBolt extends BaseBasicBolt {
         boolean shotsOnGoal = false;
         if (team.equals("B")) {
             // team 1: y > 22578.5 and y < 29898.5, x = 33941.0, z < 2440.0
-            if ((projectedY >= 22578.5 && projectedY <= 29898.5) && (projectedX >= 33941)) {
+            if ((projectedX >= 22578.5 && projectedX <= 29898.5) && (projectedY >= 33941)) {
                 shotsOnGoal = true;
                 teamBShotsOnGoal++;
                 System.out.println("It's a shot on goal by team B!");
             }
         } else {
             // team 2: y > 22560.0 and y < 29880.0, x = -33968.0, z < 2440.0
-            if ((projectedY >= 22560 && projectedY <= 29880) && (projectedX >= -33968)) {
+            if ((projectedX >= 22560 && projectedX <= 29880) && (projectedY >= -33968)) {
                 shotsOnGoal = true;
                 teamAShotsOnGoal++;
                 System.out.println("It's a shot on goal by team A!");

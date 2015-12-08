@@ -23,6 +23,10 @@
 </style>
 <svg class="chart"></svg>
 <svg class="pie"></svg>
+<div class="shots-on-goal">
+    <p class="shots"></p>
+    <p class="shots"></p>
+</div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
     var width = 420,
@@ -132,6 +136,10 @@
                     });
 
         });
+    
+    // --------------------------------------------
+    var shotsDiv = d3.select(".shots-on-goal);
+    
     
     var inter = setInterval(function() {
                 updateData();

@@ -34,11 +34,11 @@ public class PublisherBolt extends BaseRichBolt {
     public void execute(Tuple tuple) {
         String topic = tuple.getStringByField(Constants.Fields.TOPIC);
         byte[] message = tuple.getBinaryByField(Constants.Fields.PAYLOAD);
-        try {
+        /*try {
             publisher.publish(topic, message);
         } catch (JMSException e) {
             e.printStackTrace();
-        }
+        }*/
         outputCollector.ack(tuple);
     }
 

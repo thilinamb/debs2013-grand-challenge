@@ -14,15 +14,10 @@ import cs555.project.util.StatCollector;
  */
 public class HubBolt extends BaseBasicBolt {
 
-    int counter = 0;
-
     @Override
     public void execute(Tuple tuple, BasicOutputCollector basicOutputCollector) {
         // just print everything
-        if (counter % 1000 == 0) {
-            StatCollector.getInstance().record(counter);
-        }
-        counter++;
+        StatCollector.getInstance().record(1);
 
         String playerName = tuple.getStringByField(Constants.Fields.META_NAME);
         // only emit players' data into the player-positions stream
