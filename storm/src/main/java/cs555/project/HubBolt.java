@@ -7,6 +7,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import cs555.project.util.Constants;
+import cs555.project.util.StatCollector;
 
 /**
  * @author Thilina Buddhika
@@ -18,10 +19,11 @@ public class HubBolt extends BaseBasicBolt {
     @Override
     public void execute(Tuple tuple, BasicOutputCollector basicOutputCollector) {
         // just print everything
-        counter++;
         if (counter % 1000 == 0) {
-            System.out.println("Record count : " + counter);
+            StatCollector.getInstance().record(counter);
         }
+        counter++;
+
         String playerName = tuple.getStringByField(Constants.Fields.META_NAME);
         // only emit players' data into the player-positions stream
         if (!playerName.equals("Ball") && !playerName.equals("Referee")) {
