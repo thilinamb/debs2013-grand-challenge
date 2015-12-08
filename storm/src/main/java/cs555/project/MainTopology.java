@@ -68,6 +68,7 @@ public class MainTopology {
 
         // run on Storm cluster
         if (args != null && !args[0].equalsIgnoreCase("local")) {
+            conf.setNumAckers(15);
             conf.setNumWorkers(15);
             conf.put(Constants.INPUT_FILE, args[1]);
             try {

@@ -95,12 +95,13 @@ public class EnrichBolt extends BaseRichBolt {
         int sensorId = tuple.getInteger(0);
         SensorMetadata meta = metadata.get(sensorId);
         if(meta != null) {
-            outputCollector.emit(new Values(sensorId, tuple.getLong(1),
+            outputCollector.emit(tuple, new Values(sensorId, tuple.getLong(1),
                     meta.playerName, meta.team, meta.leg,
                     tuple.getDouble(2), tuple.getDouble(3), tuple.getDouble(4),
                     tuple.getDouble(5), tuple.getDouble(6),
                     tuple.getDouble(7), tuple.getDouble(8), tuple.getDouble(9),
                     tuple.getDouble(10), tuple.getDouble(11), tuple.getDouble(12)));
+            outputCollector.ack(tuple);
         }
     }
 

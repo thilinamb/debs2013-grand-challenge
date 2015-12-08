@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -55,6 +56,7 @@ public class FileReaderSpout extends BaseRichSpout {
                 }
                 long timeInPicoSecs = Long.parseLong(currentSegments[1]);
                 currentTs = timeInPicoSecs / Constants.PICO_TO_MILLI;
+                String handle =UUID.randomUUID().toString();
                 // emit the line
                 if (isWithinTheDuration(timeInPicoSecs)) {
                     collector.emit(new Values(Integer.parseInt(currentSegments[0]), currentTs,
@@ -64,7 +66,7 @@ public class FileReaderSpout extends BaseRichSpout {
                             Double.parseDouble(currentSegments[7]), Double.parseDouble(currentSegments[8]),
                             Double.parseDouble(currentSegments[9]),
                             Double.parseDouble(currentSegments[10]), Double.parseDouble(currentSegments[11]),
-                            Double.parseDouble(currentSegments[12])));
+                            Double.parseDouble(currentSegments[12])), handle);
                 }
                 // read next line
                 line = bufferedReader.readLine();

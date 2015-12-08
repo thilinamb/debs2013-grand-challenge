@@ -17,9 +17,11 @@ import java.util.Map;
 public class PublisherBolt extends BaseRichBolt {
 
     private Publisher publisher;
+    private OutputCollector outputCollector;
 
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
+        this.outputCollector = outputCollector;
         String amqpAddrStr = (String) map.get(Constants.AMQP_ADDR);
         try {
             publisher = new Publisher(amqpAddrStr);
@@ -37,6 +39,7 @@ public class PublisherBolt extends BaseRichBolt {
         } catch (JMSException e) {
             e.printStackTrace();
         }
+        outputCollector.ack(tuple);
     }
 
     @Override
