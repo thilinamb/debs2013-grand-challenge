@@ -27,6 +27,7 @@ public class Constants {
     }
 
     public class Fields {
+        public static final String EMIT_TS = "emit-ts";
         public static final String RAW_SID = "sid";
         public static final String RAW_TIMESTAMP = "ts";
         public static final String RAW_LOC_X = "loc-x";

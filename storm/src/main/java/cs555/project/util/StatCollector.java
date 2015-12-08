@@ -3,8 +3,6 @@ package cs555.project.util;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -50,7 +48,7 @@ public class StatCollector{
             } else {
                 lastRecordedTime = System.currentTimeMillis();
                 bufferedWriter = new BufferedWriter(new FileWriter(
-                        "/tmp/thilinamb/storm-" + getMachineName() + "-" + lastRecordedTime + ".stat"));
+                        "/tmp/thilinamb/thru-" + Util.getMachineName() + "-" + lastRecordedTime + ".stat"));
                 msgCounter.addAndGet(delta);
                 previousCount = delta;
             }
@@ -59,14 +57,6 @@ public class StatCollector{
         }
     }
 
-    private String getMachineName() {
-        InetAddress inetAddr;
-        try {
-            inetAddr = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            inetAddr = InetAddress.getLoopbackAddress();
-        }
-        return inetAddr.getHostName();
-    }
+
 }
 

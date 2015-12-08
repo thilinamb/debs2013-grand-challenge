@@ -76,6 +76,7 @@ public class RunningPerfCalcBolt extends BaseBasicBolt {
                 e.printStackTrace();
             }
         }
+
     }
 
     private byte[] createBinaryPayload(String playerName, String team, double speed) throws IOException {

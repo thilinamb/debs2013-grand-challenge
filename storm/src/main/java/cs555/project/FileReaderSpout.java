@@ -39,7 +39,8 @@ public class FileReaderSpout extends BaseRichSpout {
                     currentTs = timeInPicoSecs / Constants.PICO_TO_MILLI;
                     // emit the line
                     if (isWithinTheDuration(timeInPicoSecs)) {
-                        FileReaderSpout.this.addToQueue(new Values(Integer.parseInt(currentSegments[0]), currentTs,
+                        FileReaderSpout.this.addToQueue(new Values(System.currentTimeMillis(),
+                                Integer.parseInt(currentSegments[0]), currentTs,
                                 Double.parseDouble(currentSegments[2]), Double.parseDouble(currentSegments[3]),
                                 Double.parseDouble(currentSegments[4]),
                                 Double.parseDouble(currentSegments[5]), Double.parseDouble(currentSegments[6]),
@@ -79,7 +80,8 @@ public class FileReaderSpout extends BaseRichSpout {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        outputFieldsDeclarer.declare(new Fields(Constants.Fields.RAW_SID, Constants.Fields.RAW_TIMESTAMP,
+        outputFieldsDeclarer.declare(new Fields(Constants.Fields.EMIT_TS, Constants.Fields.RAW_SID,
+                Constants.Fields.RAW_TIMESTAMP,
                 Constants.Fields.RAW_LOC_X, Constants.Fields.RAW_LOC_Y, Constants.Fields.RAW_LOC_Z,
                 Constants.Fields.RAW_VELOCITY, Constants.Fields.RAW_ACCELERATION,
                 Constants.Fields.RAW_VEL_X, Constants.Fields.RAW_VEL_Y, Constants.Fields.RAW_VEL_Z,

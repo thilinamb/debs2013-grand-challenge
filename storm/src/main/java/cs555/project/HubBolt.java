@@ -40,6 +40,7 @@ public class HubBolt extends BaseBasicBolt {
         // emit ball possession data
         if (!playerName.equals("Referee")) {
             basicOutputCollector.emit(Constants.Streams.PLAYER_BALL_POSITIONS, new Values(
+                    tuple.getLongByField(Constants.Fields.EMIT_TS),
                     tuple.getLongByField(Constants.Fields.RAW_TIMESTAMP),
                     tuple.getStringByField(Constants.Fields.META_NAME),
                     tuple.getStringByField(Constants.Fields.META_TEAM),
@@ -59,7 +60,7 @@ public class HubBolt extends BaseBasicBolt {
         outputFieldsDeclarer.declareStream(Constants.Streams.PLAYER_POSITIONS, new Fields(Constants.Fields.RAW_TIMESTAMP,
                 Constants.Fields.META_NAME, Constants.Fields.META_TEAM, Constants.Fields.RAW_LOC_X, Constants.Fields.RAW_LOC_Y));
         // position of players and ball to calculate the ball possession
-        outputFieldsDeclarer.declareStream(Constants.Streams.PLAYER_BALL_POSITIONS, new Fields(
+        outputFieldsDeclarer.declareStream(Constants.Streams.PLAYER_BALL_POSITIONS, new Fields(Constants.Fields.EMIT_TS,
                 Constants.Fields.RAW_TIMESTAMP, Constants.Fields.META_NAME, Constants.Fields.META_TEAM, Constants.Fields.META_LEG,
                 Constants.Fields.RAW_LOC_X, Constants.Fields.RAW_LOC_Y, Constants.Fields.RAW_ACCELERATION,
                 Constants.Fields.RAW_VELOCITY, Constants.Fields.RAW_VEL_X, Constants.Fields.RAW_VEL_Y));

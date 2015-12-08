@@ -7,6 +7,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import cs555.project.util.Constants;
+import cs555.project.util.LatencyTracker;
 import cs555.project.util.Util;
 
 import java.util.HashMap;
@@ -42,6 +43,7 @@ public class BallHitDetectionBolt extends BaseBasicBolt {
 
     private Map<String, PlayerPosition> playerLocations = new HashMap<>();
     private PlayerPosition currentBallHolder;
+    private int count;
 
     @Override
     public void execute(Tuple tuple, BasicOutputCollector basicOutputCollector) {
@@ -79,6 +81,10 @@ public class BallHitDetectionBolt extends BaseBasicBolt {
                 /*System.out.println("Ball closest to " + closestPlayer.team
                         + ", distance " + closestPlayer.distanceToBall + ", acceleration: " + acceleration);*/
             }
+        }
+        if(count++ % 2000 == 0){
+            long latency = System.currentTimeMillis() - tuple.getLongByField(Constants.Fields.EMIT_TS);
+            LatencyTracker.getInstance().addLatency(latency);
         }
     }
 

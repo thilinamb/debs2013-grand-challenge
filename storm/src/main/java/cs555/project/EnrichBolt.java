@@ -92,22 +92,22 @@ public class EnrichBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        int sensorId = tuple.getInteger(0);
+        int sensorId = tuple.getInteger(1);
         SensorMetadata meta = metadata.get(sensorId);
         if(meta != null) {
-            outputCollector.emit(tuple, new Values(sensorId, tuple.getLong(1),
+            outputCollector.emit(tuple, new Values(tuple.getLong(0), sensorId, tuple.getLong(2),
                     meta.playerName, meta.team, meta.leg,
-                    tuple.getDouble(2), tuple.getDouble(3), tuple.getDouble(4),
-                    tuple.getDouble(5), tuple.getDouble(6),
-                    tuple.getDouble(7), tuple.getDouble(8), tuple.getDouble(9),
-                    tuple.getDouble(10), tuple.getDouble(11), tuple.getDouble(12)));
+                    tuple.getDouble(3), tuple.getDouble(4), tuple.getDouble(5),
+                    tuple.getDouble(6), tuple.getDouble(7),
+                    tuple.getDouble(8), tuple.getDouble(9), tuple.getDouble(10),
+                    tuple.getDouble(11), tuple.getDouble(12), tuple.getDouble(13)));
         }
         outputCollector.ack(tuple);
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        outputFieldsDeclarer.declare(new Fields(Constants.Fields.RAW_SID, Constants.Fields.RAW_TIMESTAMP,
+        outputFieldsDeclarer.declare(new Fields(Constants.Fields.EMIT_TS, Constants.Fields.RAW_SID, Constants.Fields.RAW_TIMESTAMP,
                 Constants.Fields.META_NAME, Constants.Fields.META_TEAM, Constants.Fields.META_LEG,
                 Constants.Fields.RAW_LOC_X, Constants.Fields.RAW_LOC_Y, Constants.Fields.RAW_LOC_Z,
                 Constants.Fields.RAW_VELOCITY, Constants.Fields.RAW_ACCELERATION,
