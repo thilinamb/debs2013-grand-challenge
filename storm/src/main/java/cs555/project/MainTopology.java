@@ -68,15 +68,22 @@ public class MainTopology {
 
         // run on Storm cluster
         if (args != null && !args[0].equalsIgnoreCase("local")) {
+            int topologyCount = 1;
+            if (args.length == 3) {
+                topologyCount = Integer.parseInt(args[2]);
+            }
             conf.setNumAckers(15);
-            conf.setNumWorkers(15);
+            conf.setNumWorkers(40);
             conf.put(Constants.INPUT_FILE, args[1]);
             try {
-                StormSubmitter.submitTopology("soccer-field-analysis", conf, builder.createTopology());
-            } catch (AlreadyAliveException | InvalidTopologyException e) {
+                for (int i = 0; i < topologyCount; i++) {
+                    StormSubmitter.submitTopology("soccer-field-analysis-" + i, conf, builder.createTopology());
+                    Thread.sleep(1000);
+                }
+            } catch (AlreadyAliveException | InvalidTopologyException | InterruptedException e) {
                 e.printStackTrace();
             }
-        // local mode
+            // local mode
         } else {
             conf.setMaxTaskParallelism(5);
             LocalCluster cluster = new LocalCluster();
