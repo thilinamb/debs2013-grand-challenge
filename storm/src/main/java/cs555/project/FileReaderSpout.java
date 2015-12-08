@@ -11,7 +11,9 @@ import cs555.project.util.Constants;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayDeque;
 import java.util.Map;
+import java.util.Queue;
 import java.util.UUID;
 
 
@@ -22,8 +24,58 @@ import java.util.UUID;
  */
 public class FileReaderSpout extends BaseRichSpout {
 
+    private class FileReaderThread implements Runnable {
+        @Override
+        public void run() {
+            try {
+                String line;
+                String[] currentSegments = null;
+                long currentTs = 0;
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (currentTs == 0) { // this is the first line
+                        currentSegments = line.split(",");
+                    }
+                    long timeInPicoSecs = Long.parseLong(currentSegments[1]);
+                    currentTs = timeInPicoSecs / Constants.PICO_TO_MILLI;
+                    // emit the line
+                    if (isWithinTheDuration(timeInPicoSecs)) {
+                        FileReaderSpout.this.addToQueue(new Values(Integer.parseInt(currentSegments[0]), currentTs,
+                                Double.parseDouble(currentSegments[2]), Double.parseDouble(currentSegments[3]),
+                                Double.parseDouble(currentSegments[4]),
+                                Double.parseDouble(currentSegments[5]), Double.parseDouble(currentSegments[6]),
+                                Double.parseDouble(currentSegments[7]), Double.parseDouble(currentSegments[8]),
+                                Double.parseDouble(currentSegments[9]),
+                                Double.parseDouble(currentSegments[10]), Double.parseDouble(currentSegments[11]),
+                                Double.parseDouble(currentSegments[12])));
+                    }
+                    // read next line
+                    line = bufferedReader.readLine();
+                    if (line == null) { // EOF
+                        break;
+                    }
+                    currentSegments = line.split(",");
+                    long nextTs = Long.parseLong(currentSegments[1]) / Constants.PICO_TO_MILLI;
+                    long timeUntilNextRecord = nextTs - currentTs;
+                    Thread.sleep(timeUntilNextRecord);
+                }
+            } catch (java.io.IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     BufferedReader bufferedReader;
     SpoutOutputCollector collector;
+    private Queue<Values> recordQueue = new ArrayDeque<>();
+
+    private synchronized int addToQueue(Values vals) {
+        recordQueue.add(vals);
+        return recordQueue.size();
+    }
+
+    private synchronized Values readFromQueue() {
+        return recordQueue.poll();
+    }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
@@ -42,44 +94,16 @@ public class FileReaderSpout extends BaseRichSpout {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        new Thread(new FileReaderThread()).start();
     }
+
 
     @Override
     public void nextTuple() {
-        try {
-            String line;
-            String[] currentSegments = null;
-            long currentTs = 0;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (currentTs == 0) { // this is the first line
-                    currentSegments = line.split(",");
-                }
-                long timeInPicoSecs = Long.parseLong(currentSegments[1]);
-                currentTs = timeInPicoSecs / Constants.PICO_TO_MILLI;
-                String handle =UUID.randomUUID().toString();
-                // emit the line
-                if (isWithinTheDuration(timeInPicoSecs)) {
-                    collector.emit(new Values(Integer.parseInt(currentSegments[0]), currentTs,
-                            Double.parseDouble(currentSegments[2]), Double.parseDouble(currentSegments[3]),
-                            Double.parseDouble(currentSegments[4]),
-                            Double.parseDouble(currentSegments[5]), Double.parseDouble(currentSegments[6]),
-                            Double.parseDouble(currentSegments[7]), Double.parseDouble(currentSegments[8]),
-                            Double.parseDouble(currentSegments[9]),
-                            Double.parseDouble(currentSegments[10]), Double.parseDouble(currentSegments[11]),
-                            Double.parseDouble(currentSegments[12])), handle);
-                }
-                // read next line
-                line = bufferedReader.readLine();
-                if (line == null) { // EOF
-                    break;
-                }
-                currentSegments = line.split(",");
-                long nextTs = Long.parseLong(currentSegments[1]) / Constants.PICO_TO_MILLI;
-                long timeUntilNextRecord = nextTs - currentTs;
-                Thread.sleep(timeUntilNextRecord);
-            }
-        } catch (java.io.IOException | InterruptedException e) {
-            e.printStackTrace();
+        Values nextMessage = readFromQueue();
+        if(nextMessage != null) {
+            String handle = UUID.randomUUID().toString();
+            collector.emit(nextMessage, handle);
         }
     }
 

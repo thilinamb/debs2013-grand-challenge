@@ -45,7 +45,6 @@ public class BallPossessionDetectionBolt extends BaseBasicBolt {
             lastOwner = currentOwner;
             totalTimeElapsed = currentSwitchTime - startTime;
         }
-        int c = 0;
         if (System.currentTimeMillis() - lastEmittedTime > 1000) {
             try {
                 byte[] binaryPayload = prepareBinaryMessage((teamAPossessionTime * 1.0) / totalTimeElapsed,
@@ -56,12 +55,6 @@ public class BallPossessionDetectionBolt extends BaseBasicBolt {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            c++;
-        }
-        if (c == 5) {
-            System.out.println("A: " + (teamAPossessionTime * 1.0) / totalTimeElapsed + ", B: " +
-                    (teamBPossessionTime * 1.0) / totalTimeElapsed);
-            c = 0;
         }
     }
 

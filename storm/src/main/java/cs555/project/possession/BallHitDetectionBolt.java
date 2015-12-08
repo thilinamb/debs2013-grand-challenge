@@ -67,9 +67,8 @@ public class BallHitDetectionBolt extends BaseBasicBolt {
             } else {
                 currentBallHolder = closestPlayer;
                 if (currentBallHolder.distanceToBall <= 1000 && acceleration >= 55) {
-                    // TODO: update it to emit to a stream that calculates the ball posession
                     // previous ball holder has hit the ball
-                    System.out.println("[EVENT] Ball belongs to team " + currentBallHolder.team);
+                    //System.out.println("[EVENT] Ball belongs to team " + currentBallHolder.team);
                     // emit to a stream to calculate shots on goal
                     basicOutputCollector.emit(Constants.Streams.SHOTS_ON_GALL, new Values(tuple.getLongByField(
                             Constants.Fields.RAW_TIMESTAMP), currentBallHolder.team, x, y, tuple.getDoubleByField(Constants.Fields.RAW_VELOCITY),

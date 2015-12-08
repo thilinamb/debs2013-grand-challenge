@@ -101,8 +101,8 @@ public class EnrichBolt extends BaseRichBolt {
                     tuple.getDouble(5), tuple.getDouble(6),
                     tuple.getDouble(7), tuple.getDouble(8), tuple.getDouble(9),
                     tuple.getDouble(10), tuple.getDouble(11), tuple.getDouble(12)));
-            outputCollector.ack(tuple);
         }
+        outputCollector.ack(tuple);
     }
 
     @Override
