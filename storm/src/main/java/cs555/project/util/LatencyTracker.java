@@ -17,7 +17,7 @@ public class LatencyTracker {
 
     private LatencyTracker() {
         try {
-            bufferedWriter = new BufferedWriter(new FileWriter("/tmp/thilinamb/lat-" +
+            bufferedWriter = new BufferedWriter(new FileWriter("/tmp/thilinab/lat-" +
                     Util.getMachineName() + System.currentTimeMillis() + ".stat"));
         } catch (IOException e) {
             e.printStackTrace();

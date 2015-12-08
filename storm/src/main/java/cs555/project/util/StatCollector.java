@@ -48,7 +48,7 @@ public class StatCollector{
             } else {
                 lastRecordedTime = System.currentTimeMillis();
                 bufferedWriter = new BufferedWriter(new FileWriter(
-                        "/tmp/thilinamb/thru-" + Util.getMachineName() + "-" + lastRecordedTime + ".stat"));
+                        "/tmp/thilinab/thru-" + Util.getMachineName() + "-" + lastRecordedTime + ".stat"));
                 msgCounter.addAndGet(delta);
                 previousCount = delta;
             }
