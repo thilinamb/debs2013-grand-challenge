@@ -73,7 +73,7 @@ public class MainTopology {
                 topologyCount = Integer.parseInt(args[2]);
             }
             conf.setNumAckers(15);
-            conf.setNumWorkers(40);
+            conf.setNumWorkers(40/topologyCount);
             conf.put(Constants.INPUT_FILE, args[1]);
             try {
                 for (int i = 0; i < topologyCount; i++) {
